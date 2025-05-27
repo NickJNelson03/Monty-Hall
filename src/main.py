@@ -14,84 +14,55 @@ User chooses to switch doors, since this yield the better expectation, but is th
 
 import random
 
-def simulation():   
+
+def simulation():
 
     prizes = ["goat", "car", "goat"]
 
-    doors = []
+    random.shuffle(prizes)
 
-    while len(prizes) > 0:
-
-        prize_number = random.randrange(len(prizes))
-
-        doors.append(prizes.pop(prize_number))
-    
-    print("\n             Monty Hall Simulation                   ")
+    print("\n             Monty Hall Game                   ")
     print("=======================================================")
-
     print("Now that you know how the game works, give it a try!\n")
 
-    user_chosen_door = int(input("Pick a door from (1-3)? ")) # Aligns with the indexing of the doors
+    users_door = int(input("Pick a door (1-3): ")) - 1 # Asking the user to pick a door
 
-    print("You chose door:", user_chosen_door, '\n') # Aligns with the users perspective of the door they selected
+    print("You chose door:", users_door + 1) # Showing the user the door that they picked
 
-    door_index = 0 # The door position in the array, changed_door_index.e Door 1 would be at position 0 in the array
+    # Getting all avaliable doors, that the user didn't choose and have a goat behind them
+    avaliable_doors = [door for door in range(len(prizes)) if door != users_door and prizes[door] == "goat"] 
 
-    user_door_list = user_chosen_door - 1
+    host_opened_door = random.choice(avaliable_doors)
 
-    while True:
+    print("\nLet's open door number", host_opened_door + 1)
+    print("(Behind the door is a goat!)")
 
-        if doors[door_index] == 'goat' and door_index != (user_door_list): # Checks for a goat behind the door and check that's it's not the same door the User chose
-            user_door_index = door_index + 1
-            print("Let's open up door number", user_door_index) # Aligns with the users perspective of a door that
-            print("...Woah, it's a goat!\n")
-            break
-        
-        door_index+=1
-    
-    print("So, here's your options, you can stay with your door or you can switch to the other door.")
-    
-    user_decision = input("Stay/Switch Doors: ").lower()
-
-    def final_result(chosen_door):
-        print("\n====================================\n")
-        print("Final Results:")
-        if doors[chosen_door] == "car":
-            
-            print("Jeez, Congrats on your brand new car!!\n\n")
-        else:
-            
-            print("Aww man, better luck next time\n\n")
-
-        return 0 
+    print("\nSo, here's a question for you.\n")
+    users_decision = input("Would you like to Stay or Switch doors. (Stay/Switch): ").lower()
     
     while True:
 
-        if user_decision == "stay":
-            print("\nInteresting.. you choose to stay.")
-            final_result(user_door_list)
+        if users_decision == "stay":
+            print("\nInteresting.. you're sticking with this door.")
+            final_choice = users_door
             break
-
-        elif user_decision == "switch":
-
-            print("\nOuuu, choosing to switch..")
-              
-            for changed_door_index in range(len(doors)-1):
-                    
-                if doors[changed_door_index] != user_door_list and doors[changed_door_index] != door_index:
-
-                    final_result(changed_door_index)
-                    return
-        else:
-            user_decision = input("Stay/Switch Doors: ").lower()
-
         
-def main():
+        elif users_decision == "switch":
+            final_choice = [final_door for final_door in range(len(prizes)) if final_door not in [users_door, host_opened_door]][0]
+            print("\nWoah, you choose to switch door number", final_choice, ".")
+            break
+        else:
+            print("\nYour input is invaild.")
+            users_decision = input("Would you like to Stay or Switch doors. (Stay/Switch): ").lower()
 
+    print("\n======================================\n")
+    print("Final Results:")
+    if prizes[final_choice] == "car": 
+        print("Congrats, you won a brand new car!!!")
+
+    else:
+        print("Oh no, better luck next time.")
+def main(): 
     simulation()
 
-    return 0
-    
-
-# Function call,
 main()
