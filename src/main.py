@@ -14,7 +14,7 @@ User chooses to switch doors, since this yield the better expectation, but is th
 
 import random
 
-def simulation(trials, answer):   
+def simulation():   
 
     prizes = ["goat", "car", "goat"]
 
@@ -31,76 +31,67 @@ def simulation(trials, answer):
 
     print("Now that you know how the game works, give it a try!\n")
 
-    user_chosen_door = int(input("Pick a door from (1-3)? ")) - 1
+    user_chosen_door = int(input("Pick a door from (1-3)? ")) # Aligns with the indexing of the doors
 
-    print("You choose door:", user_chosen_door + 1, '\n')
+    print("You chose door:", user_chosen_door, '\n') # Aligns with the users perspective of the door they selected
 
-    idx = 0
+    door_index = 0 # The door position in the array, changed_door_index.e Door 1 would be at position 0 in the array
+
+    user_door_list = user_chosen_door - 1
 
     while True:
 
-        if doors[idx] == 'goat' and idx != (user_chosen_door):
-            print("Let's open up door number", idx + 1)
+        if doors[door_index] == 'goat' and door_index != (user_door_list): # Checks for a goat behind the door and check that's it's not the same door the User chose
+            user_door_index = door_index + 1
+            print("Let's open up door number", user_door_index) # Aligns with the users perspective of a door that
             print("...Woah, it's a goat!\n")
             break
-
-        idx+=1
+        
+        door_index+=1
     
     print("So, here's your options, you can stay with your door or you can switch to the other door.")
     
     user_decision = input("Stay/Switch Doors: ").lower()
+
+    def final_result(chosen_door):
+        print("\n====================================\n")
+        print("Final Results:")
+        if doors[chosen_door] == "car":
+            
+            print("Jeez, Congrats on your brand new car!!\n\n")
+        else:
+            
+            print("Aww man, better luck next time\n\n")
+
+        return 0 
     
     while True:
 
         if user_decision == "stay":
-            print("\n Interesting.. you choose to stay.")
+            print("\nInteresting.. you choose to stay.")
+            final_result(user_door_list)
             break
 
         elif user_decision == "switch":
-            print("\n")
-            
-            for door_number in range(len(doors)-1):
 
-                if door_number != idx and door_number != user_chosen_door:
-                    user_chosen_door = door_number
+            print("\nOuuu, choosing to switch..")
+              
+            for changed_door_index in range(len(doors)-1):
+                    
+                if doors[changed_door_index] != user_door_list and doors[changed_door_index] != door_index:
 
-
-
-                    print("You choose to switch to door number: ", user_chosen_door+1)
-                    break
-            break
-
+                    final_result(changed_door_index)
+                    return
         else:
             user_decision = input("Stay/Switch Doors: ").lower()
 
-    print("Now, let's open door number", user_chosen_door+1)
-    
-    if doors[user_chosen_door] == "car":
-
-        "Jeez, Congrats on your brand new car!!"
-    else:
-
-        "Aww man, better luck next time"
-
         
+def main():
 
+    simulation()
+
+    return 0
     
-
-
-
-
 
 # Function call,
-simulation(1000, 1)
-
-
-
-
-    
-
-
-
-
-
-
-
+main()
