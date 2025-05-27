@@ -49,10 +49,10 @@ def simulation():
         
         elif users_decision == "switch":
             final_choice = [final_door for final_door in range(len(prizes)) if final_door not in [users_door, host_opened_door]][0]
-            print("\nWoah, you choose to switch door number", final_choice, ".")
+            print("\nWoah, you choose to switch door number", final_choice + 1, ".")
             break
         else:
-            print("\nYour input is invaild.")
+            print("\nYour input is invalid.")
             users_decision = input("Would you like to Stay or Switch doors. (Stay/Switch): ").lower()
 
     print("\n======================================\n")
@@ -62,7 +62,11 @@ def simulation():
 
     else:
         print("Oh no, better luck next time.")
+        print("\nThe car was actually behind door", prizes.index("car")+1, "")
+
+    
 def main(): 
     simulation()
+    print()
 
 main()
